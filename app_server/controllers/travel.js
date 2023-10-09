@@ -1,7 +1,8 @@
 const request = require("request");
 const apiOptions = {
   server: "http://localhost:3000",
-};   
+};
+
 const renderTravelList = (rec, res, responseBody) => {
   let message = null;
   let pageTitle = process.env.npm_package_description + " Travel";
@@ -30,7 +31,7 @@ const travelList = (req, res) => {
     json: {},
   };
 
-  console.info(" >> travelcontroller.travelList calling " + requestOptions.url);
+  console.info(" >> travelcontroller.travelList calling" + requestOptions.url);
   request(requestOptions, (err, { statusCode }, body) => {
     if (err) {
       console.error(err);
