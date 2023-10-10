@@ -7,7 +7,7 @@ import { Trip } from "../models/trip";
 export class TripDataService {
   constructor(private http: Http) {}
 
-  private apiBaseUrl = "http://localhost:3000/api/";
+  private apiBaseUrl = "http://127.0.0.1:3000/api/";
   private tripUrl = `${this.apiBaseUrl}trips/`;
 
   public getTrips(): Promise<Trip[]> {
@@ -19,7 +19,7 @@ export class TripDataService {
       .catch(this.handleError);
   }
 
-  public getTrip(tripCode: string): Promise<Trip[]> {
+  public getTrip(tripCode: string): Promise<Trip> {
     console.log("Inside TripDataService#getTrip(tripCode)");
     return this.http
       .get(this.tripUrl + tripCode)
@@ -37,7 +37,7 @@ export class TripDataService {
       .catch(this.handleError);
   }
 
-  public updateTrip(formData: Trip): Promise<Trip[]> {
+  public updateTrip(formData: Trip): Promise<Trip> {
     console.log("Inside TripDataService#updateTrip");
     console.log(formData);
     return this.http

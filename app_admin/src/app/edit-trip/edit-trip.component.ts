@@ -11,16 +11,15 @@ import { TripDataService } from "../services/trip-data.service";
 export class EditTripComponent implements OnInit {
   editForm: FormGroup;
   submitted = false;
-
   constructor(
     private formBuilder: FormBuilder,
     private router: Router,
     private tripService: TripDataService
   ) {}
-
   ngOnInit() {
     // retrieve stashed tripId
     let tripCode = localStorage.getItem("tripCode");
+
     if (!tripCode) {
       alert("Something wrong, couldn't find where I stashed tripCode!");
       this.router.navigate([""]);
@@ -44,11 +43,27 @@ export class EditTripComponent implements OnInit {
         tripCode +
         "')"
     );
-
     this.tripService.getTrip(tripCode).then((data) => {
+      
+      // Convert data to an array
+      const tripArray = Array.isArray(data) ? data : [data];
+      
+      // variable to store trip to be edited
+      let tripData;
+
+      // loop through tripArray to find match
+      for (const trip of tripArray) {
+        if (trip.code === tripCode) {
+          tripData = trip;
+          break; // break loop once trip is found
+        }
+      }
+
       console.log(data);
+      console.log(tripCode);
       // Don't use editForm.setValue() as it will throw console error
-      this.editForm.patchValue(data[0]);
+      this.editForm.patchValue(tripData);
+      console.log(tripData);
     });
   }
   onSubmit() {
@@ -59,9 +74,5 @@ export class EditTripComponent implements OnInit {
         this.router.navigate([""]);
       });
     }
-  }
-  // get the form short name to access the form fields
-  get f() {
-    return this.editForm.controls;
   }
 }
