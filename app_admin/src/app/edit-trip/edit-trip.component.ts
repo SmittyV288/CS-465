@@ -16,7 +16,7 @@ export class EditTripComponent implements OnInit {
     private formBuilder: FormBuilder,
     private router: Router,
     private tripService: TripDataService
-  ) {}
+  ) { }
 
   ngOnInit() {
     // retrieve stashed tripId
@@ -41,14 +41,29 @@ export class EditTripComponent implements OnInit {
     });
     console.log(
       "EditTripComponent#onInit calling TripDataService#getTrip('" +
-        tripCode +
-        "')"
+      tripCode +
+      "')"
     );
 
     this.tripService.getTrip(tripCode).then((data) => {
+
+      // Convert data to an array
+      const tripArray = Array.isArray(data) ? data : [data];
+
+      // variable to store trip to be edited
+      let tripData;
+
+      // loop through tripArray to find match
+      for (const trip of tripArray) {
+        if (trip.code === tripCode) {
+          tripData = trip;
+          break; // break loop once trip is found
+        }
+      }
+
       console.log(data);
       // Don't use editForm.setValue() as it will throw console error
-      this.editForm.patchValue(data[0]);
+      this.editForm.patchValue(tripData);
     });
   }
   onSubmit() {
