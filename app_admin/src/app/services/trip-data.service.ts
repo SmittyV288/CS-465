@@ -60,6 +60,19 @@ export class TripDataService {
       .catch(this.handleError);
   }
 
+  public deleteTrip(tripCode: string): Promise<Trip> {
+    console.log("Inside TripDataService#deleteTrip");
+    const headers = new Headers({
+      "Content-Type": "application/json",
+      Authorization: `Bearer ${localStorage.getItem("travlr-token")}`,
+    });
+    return this.http
+      .delete(this.tripUrl + tripCode, { headers: headers })
+      .toPromise()
+      .then((response) => response.json() as Trip[])
+      .catch(this.handleError);
+  }
+
   private handleError(error: any): Promise<any> {
     console.error("Something has gone wrong", error); // for demo purposes only
     return Promise.reject(error.message || error);
